@@ -282,7 +282,7 @@ export default function EllinghamChart({
         line style — metal: solid / dashed / dotted = s / l / g · opacity — compound: 100 / 62 / 30 % = s / l / g
       </text>
       <text x={ML + PW - 8} y={MT + PH - 26} textAnchor="end" fontSize="10.5" fill="#6b7686" fontFamily="IBM Plex Mono, monospace" opacity="0.8">
-        sources — Reed 1971 (O₂, N₂, F₂, Cl₂) · Coltters 1985 (carbides)
+        sources — Reed 1971 (O₂, N₂, F₂, Cl₂) · Coltters 1985 (carbides) · Barin 1993 (hydrides, sulfides, additions)
       </text>
     </svg>
   );

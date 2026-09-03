@@ -214,6 +214,12 @@ const cass: RawRow[] = [
   [0, 800, -39.5, -45, "$W + C = WC$", -10],
   [0, 1000, -70, -59, "$2Mo + C = Mo_2C$", -12],
   [0, 720, -183, -175, "$Zr + C = ZrC$", 1],
+  /* added (Barin 1993, linear approximations) */
+  [0, 3083, -20.5, -14.3, "$V + C = VC$", 0],
+  [0, 3885, -32.0, -24.2, "$Nb + C = NbC$", 26],
+  [0, 4153, -33.6, -25.3, "$Ta + C = TaC$", -16],
+  [0, 4200, -44.0, -33.0, "$Hf + C = HfC$", -30],
+  [0, 2700, -16.0, -10.6, "$4B + C = B_4C$", 0],
 ];
 const cals: RawRow[] = [
   [1414, 2000, -49, -30, "$Si + C = SiC$", 0],
@@ -231,6 +237,9 @@ const niss: RawRow[] = [
   [0, 1940, -160.5, -73.4, "$2Ti + N_2 = 2TiN$", 1],
   [0, 2190, -83.3, 3.6, "$2V + N_2 = 2VN$", -13],
   [0, 2128, -163.8, -67.2, "$2Zr + N_2 = 2ZrN$", -2],
+  /* added (Barin 1993, linear approximations) */
+  [0, 3580, -159.0, -70.0, "$2Hf + N_2 = 2HfN$", 18],
+  [0, 1800, -58.0, -15.0, "$2Cr + N_2 = 2CrN$", 0],
 ];
 const nils: RawRow[] = [
   [2300, 2500, -20.8, 0, "$2B + N_2 = 2BN$", 0],
@@ -250,6 +259,8 @@ const flss: RawRow[] = [
   [0, 453, -290.0, -271.0, "$2Li + F_2 = 2LiF$", -8],
   [0, 336, -270.0, -253.0, "$2K + F_2 = 2KF$", 0.3],
   [0, 371, -274.0, -255.0, "$2Na + F_2 = 2NaF$", -0.3],
+  /* added (Barin 1993) */
+  [0, 923, -246.4, -216.0, "$Mg + F_2 = MgF_2$", 0],
 ];
 const flls: RawRow[] = [
   [932, 1545, -181.0, -156.0, "$\\frac{2}{3} Al + F_2 = \\frac{2}{3} AlF_3$", 0],
@@ -257,6 +268,12 @@ const flls: RawRow[] = [
   [453, 1120, -271.0, -240.0, "$2Li + F_2 = 2LiF$", 0],
   [336, 1031, -253.0, -214.0, "$2K + F_2 = 2KF$", 0],
   [371, 1187, -255.0, -214.0, "$2Na + F_2 = 2NaF$", 0],
+  /* added */
+  [923, 1363, -216.0, -201.5, "$Mg + F_2 = MgF_2$", 0],
+];
+const flgs: RawRow[] = [
+  /* added */
+  [1363, 1536, -201.5, -194.0, "$Mg + F_2 = MgF_2$", 0],
 ];
 const flll: RawRow[] = [
   [1545, 2500, -156.0, -157.0, "$\\frac{2}{3} Al + F_2 = \\frac{2}{3} AlF_3$", 0],
@@ -270,6 +287,12 @@ const flgl: RawRow[] = [
   [1597, 1954, -216.0, -194.0, "$2Li + F_2 = 2LiF$", 0],
   [1130, 1775, -209.0, -166.0, "$2K + F_2 = 2KF$", 0],
   [1268, 1977, -209.0, -156.0, "$2Na + F_2 = 2NaF$", 0],
+  /* added */
+  [1536, 2300, -194.0, -166.0, "$Mg + F_2 = MgF_2$", 0],
+];
+const flsg: RawRow[] = [
+  /* added (SiF4 is gaseous; Si boils at 1687 K) */
+  [0, 1687, -186.6, -157.5, "$\\frac{1}{2} Si + F_2 = \\frac{1}{2} SiF_4$", 0],
 ];
 const flgg: RawRow[] = [
   [0, 2500, -81.2, -36.0, "$\\frac{1}{2} C + F_2 = \\frac{1}{2} CF_4$", 0],
@@ -278,6 +301,8 @@ const flgg: RawRow[] = [
   [1775, 2500, -166.0, -150.0, "$2K + F_2 = 2KF$", 0],
   [1977, 2500, -156.0, -150.0, "$2Na + F_2 = 2NaF$", 0],
   [0, 1287, -129.8, -134.1, "$2H + F_2 = 2HF$", 0],
+  /* added */
+  [1687, 2500, -157.5, -143.7, "$\\frac{1}{2} Si + F_2 = \\frac{1}{2} SiF_4$", 0],
 ];
 
 /* ---------- Chlorides ---------- */
@@ -290,35 +315,49 @@ const clss: RawRow[] = [
   [0, 336, -209.4, -193.2, "$2K + Cl_2 = 2KCl$", 0],
   [0, 371, -196.8, -180.0, "$2Na + Cl_2 = 2NaCl$", -5],
   [0, 0, -36.1, -36.1, "$\\frac{1}{3} W + Cl_2 = \\frac{1}{3} WCl_6$", 8],
+  /* added (Barin 1993) */
+  [0, 923, -141.2, -110.5, "$Mg + Cl_2 = MgCl_2$", 0],
 ];
 const clls: RawRow[] = [
   [459, 887, -177.6, -161.0, "$2Li + Cl_2 = 2LiCl$", 0],
   [336, 1031, -193.2, -161.0, "$2K + Cl_2 = 2KCl$", 0],
   [371, 1073, -180.0, -149.4, "$2Na + Cl_2 = 2NaCl$", 0],
+  /* added */
+  [923, 987, -110.5, -108.4, "$Mg + Cl_2 = MgCl_2$", 0],
 ];
 const clsl: RawRow[] = [
   [465, 500, -92.9, -91.7, "$\\frac{2}{3} Al + Cl_2 = \\frac{2}{3} AlCl_3$", 0],
   [1055, 1123, -154.0, -152.0, "$Ca + Cl_2 = CaCl_2$", 0],
   [0, 548, -36.1, -15.0, "$\\frac{1}{3} W + Cl_2 = \\frac{1}{3} WCl_6$", 0],
+  /* added (TiCl4 boils at 409 K) */
+  [0, 409, -95.8, -88.8, "$\\frac{1}{2} Ti + Cl_2 = \\frac{1}{2} TiCl_4$", 0],
 ];
 const clll: RawRow[] = [
   [1123, 1755, -152.0, -136.0, "$Ca + Cl_2 = CaCl_2$", 0],
   [887, 1597, -161.0, -141.2, "$2Li + Cl_2 = 2LiCl$", 0],
   [1031, 1043, -161.0, -160.0, "$2K + Cl_2 = 2KCl$", 0],
   [1073, 1156, -149.4, -145.6, "$2Na + Cl_2 = 2NaCl$", 0],
+  /* added */
+  [987, 1363, -108.4, -95.9, "$Mg + Cl_2 = MgCl_2$", 0],
 ];
 const clgl: RawRow[] = [
   [1755, 1900, -136.0, -128.0, "$Ca + Cl_2 = CaCl_2$", 0],
   [1597, 1655, -141.2, -138.4, "$2Li + Cl_2 = 2LiCl$", 0],
   [1043, 1680, -160.0, -122.4, "$2K + Cl_2 = 2KCl$", 0],
   [1156, 1738, -145.6, -110.0, "$2Na + Cl_2 = 2NaCl$", 0],
+  /* added */
+  [1363, 1685, -95.9, -83.0, "$Mg + Cl_2 = MgCl_2$", 0],
 ];
 const clsg: RawRow[] = [
   [500, 932, -91.7, -84.6, "$\\frac{2}{3} Al + Cl_2 = \\frac{2}{3} AlCl_3$", 0],
   [548, 1500, -15.0, -0.8, "$\\frac{1}{3} W + Cl_2 = \\frac{1}{3} WCl_6$", 0],
+  /* added */
+  [409, 1941, -88.8, -62.7, "$\\frac{1}{2} Ti + Cl_2 = \\frac{1}{2} TiCl_4$", 0],
 ];
 const cllg: RawRow[] = [
   [932, 2273, -84.6, -70.2, "$\\frac{2}{3} Al + Cl_2 = \\frac{2}{3} AlCl_3$", 0],
+  /* added */
+  [1941, 2500, -62.7, -53.0, "$\\frac{1}{2} Ti + Cl_2 = \\frac{1}{2} TiCl_4$", 0],
 ];
 const clgg: RawRow[] = [
   [2273, 2500, -70.2, -71.6, "$\\frac{2}{3} Al + Cl_2 = \\frac{2}{3} AlCl_3$", 0],
@@ -328,6 +367,65 @@ const clgg: RawRow[] = [
   [1655, 2500, -138.4, -118.4, "$2Li + Cl_2 = 2LiCl$", 0],
   [1680, 2500, -122.4, -110.4, "$2K + Cl_2 = 2KCl$", 0],
   [1738, 2500, -110.0, -96.8, "$2Na + Cl_2 = 2NaCl$", 0],
+  /* added */
+  [1685, 2000, -83.0, -71.0, "$Mg + Cl_2 = MgCl_2$", 0],
+];
+
+/* ---------- Hydrides (added — Barin 1993, linear segments) ---------- */
+const hyss: RawRow[] = [
+  [0, 454, -32.6, -27.0, "$2Li + H_2 = 2LiH$", 14],
+  [0, 371, -16.1, -11.6, "$2Na + H_2 = 2NaH$", 0],
+  [0, 1089, -33.4, -6.9, "$Ca + H_2 = CaH_2$", 0],
+  [0, 561, -8.4, 0.0, "$Mg + H_2 = MgH_2$", 0],
+  [0, 1200, -27.7, -2.7, "$Ti + H_2 = TiH_2$", -44],
+  [0, 1500, -38.0, -30.2, "$Zr + H_2 = ZrH_2$", -20],
+];
+const hyls: RawRow[] = [
+  [454, 961, -27.0, -8.8, "$2Li + H_2 = 2LiH$", 0],
+  [371, 700, -11.6, 0.5, "$2Na + H_2 = 2NaH$", 0],
+  [1115, 1400, -5.9, 4.6, "$Ca + H_2 = CaH_2$", 0],
+];
+const hysl: RawRow[] = [
+  [1089, 1115, -6.9, -5.9, "$Ca + H_2 = CaH_2$", 0],
+];
+const hyll: RawRow[] = [
+  [961, 1150, -8.8, -2.1, "$2Li + H_2 = 2LiH$", 0],
+];
+
+/* ---------- Sulfides (added — Barin 1993, linear segments) ---------- */
+const suss: RawRow[] = [
+  [0, 1422, -47.2, 0.0, "$2Fe + S_2 = 2FeS$", -38],
+  [0, 1519, -102.8, -37.4, "$2Mn + S_2 = 2MnS$", 0],
+  [0, 693, -96.4, -68.4, "$2Zn + S_2 = 2ZnS$", 0],
+  [0, 923, -165.0, -125.2, "$2Mg + S_2 = 2MgS$", 0],
+  [0, 1115, -225.4, -179.7, "$2Ca + S_2 = 2CaS$", 0],
+  [0, 1358, -41.2, 13.3, "$4Cu + S_2 = 2Cu_2S$", 12],
+  [0, 601, -46.8, -22.7, "$2Pb + S_2 = 2PbS$", 11],
+  [0, 1405, -45.4, 0.0, "$3Ni + S_2 = Ni_3S_2$", -20],
+  [0, 933, -76.9, -38.7, "$\\frac{4}{3} Al + S_2 = \\frac{2}{3} Al_2S_3$", 0],
+];
+const suls: RawRow[] = [
+  [1519, 2339, -37.4, -2.4, "$2Mn + S_2 = 2MnS$", 0],
+  [693, 1180, -68.4, -46.5, "$2Zn + S_2 = 2ZnS$", 0],
+  [923, 1363, -125.2, -106.3, "$2Mg + S_2 = 2MgS$", 0],
+  [1115, 1757, -179.7, -152.7, "$2Ca + S_2 = 2CaS$", 0],
+  [1358, 2000, 13.3, 41.8, "$4Cu + S_2 = 2Cu_2S$", 0],
+  [601, 1395, -22.7, 8.7, "$2Pb + S_2 = 2PbS$", 0],
+  [933, 2000, -38.7, 5.9, "$\\frac{4}{3} Al + S_2 = \\frac{2}{3} Al_2S_3$", 0],
+  [0, 630, -23.4, 1.2, "$2Hg + S_2 = 2HgS$", 0],
+];
+const sugs: RawRow[] = [
+  [1180, 1900, -46.5, -14.5, "$2Zn + S_2 = 2ZnS$", 0],
+  [1363, 2100, -106.3, -71.5, "$2Mg + S_2 = 2MgS$", 0],
+  [1757, 2300, -152.7, -127.7, "$2Ca + S_2 = 2CaS$", 0],
+  [630, 857, 1.2, 10.4, "$2Hg + S_2 = 2HgS$", 0],
+];
+const sull: RawRow[] = [
+  [1395, 2022, 8.7, 35.7, "$2Pb + S_2 = 2PbS$", 0],
+];
+const sugg: RawRow[] = [
+  [0, 2000, 16.0, 18.0, "$C + S_2 = CS_2$", 0],
+  [0, 2000, -16.0, 21.4, "$4H + S_2 = 2H_2S$", 0],
 ];
 
 /* ---------------- conversion (mirrors convert_units) ---------------- */
@@ -348,7 +446,9 @@ function build(family: string, phase: PhaseKey, rows: RawRow[]): Segment[] {
   }));
 }
 
-export type FamilyKey = "oxides" | "carbides" | "nitrides" | "fluorides" | "chlorides";
+export type FamilyKey =
+  | "oxides" | "carbides" | "nitrides" | "fluorides" | "chlorides"
+  | "hydrides" | "sulfides";
 
 export interface Family {
   key: FamilyKey;
@@ -389,10 +489,16 @@ export const FAMILIES: Family[] = [
     { ss: niss, ls: nils, gg: nigg }),
   makeFamily("fluorides", "Fluorides", "F₂", "#3ad68d", "rgba(58,214,141,0.35)", "F₂",
     "The most exothermic family on the chart — alkali and alkaline-earth fluorides anchor the bottom of the diagram.",
-    { ss: flss, ls: flls, ll: flll, gl: flgl, gg: flgg }),
+    { ss: flss, ls: flls, gs: flgs, ll: flll, gl: flgl, sg: flsg, gg: flgg }),
   makeFamily("chlorides", "Chlorides", "Cl₂", "#e8b23e", "rgba(232,178,62,0.35)", "Cl₂",
-    "Volatile chlorides of the alkali metals and aluminium — the chemistry behind the Kroll and Hunter processes.",
+    "Volatile chlorides of the alkali and alkaline-earth metals, AlCl₃ and TiCl₄ — the chemistry behind the Kroll and Hunter processes.",
     { ss: clss, ls: clls, sl: clsl, ll: clll, gl: clgl, sg: clsg, lg: cllg, gg: clgg }),
+  makeFamily("hydrides", "Hydrides", "H₂", "#5ad0b8", "rgba(90,208,184,0.35)", "H₂",
+    "Hydrogen storage and getter materials — CaH₂, ZrH₂ and TiH₂ hold hydrogen tightly; MgH₂ releases it near 300 °C.",
+    { ss: hyss, ls: hyls, sl: hysl, ll: hyll }),
+  makeFamily("sulfides", "Sulfides", "S₂", "#d9c34a", "rgba(217,195,74,0.35)", "S₂",
+    "The roasting chart of extractive metallurgy — CaS and MgS anchor the bottom while Cu₂S and HgS give up sulfur easily.",
+    { ss: suss, ls: suls, gs: sugs, ll: sull, gg: sugg }),
 ];
 
 export const familyByKey = (k: FamilyKey): Family => FAMILIES.find((f) => f.key === k)!;

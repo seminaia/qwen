@@ -223,6 +223,10 @@ export function Sources({ family }: { family: Family }) {
         <span className="text-ink-300">Carbon data</span> — Coltters, R.G. (1985). Thermodynamics of binary metallic
         carbides: a review. <em>Materials Science and Engineering</em> 76, 1–50.
       </p>
+      <p>
+        <span className="text-ink-300">Hydrides, sulfides &amp; added salts</span> — linear ΔH − TΔS segments compiled
+        from Barin, I. (1993), <em>Thermochemical Data of Pure Substances</em>, VCH.
+      </p>
       <p className="pt-1 border-t border-ink-800 font-mono text-[10.5px]">
         original tables: K → °C, kcal → kJ (×4.184), per mole of {family.gas === "C" ? "C" : family.gas}
       </p>

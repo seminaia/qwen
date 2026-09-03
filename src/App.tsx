@@ -78,7 +78,7 @@ export default function App() {
     [family, phases, selected],
   );
 
-  const hits = useMemo(() => probeHits(segments, familyKey, probeT), [segments, familyKey, probeT]);
+  const hits = useMemo(() => probeHits(segments, family, probeT), [segments, family, probeT]);
   const pinnedSeg = useMemo(() => segments.find((s) => s.id === pinnedId) ?? null, [segments, pinnedId]);
 
   const animKey = useMemo(
@@ -126,10 +126,23 @@ export default function App() {
               ELLINGHAM<span className="text-ink-400 font-medium"> ATLAS</span>
             </h1>
             <p className="text-[11px] text-ink-400 mt-1 truncate">
-              standard free energies of formation · five anion families · Reed 1971 &amp; Coltters 1985
+              standard free energies of formation · seven anion families · Reed 1971 &amp; Coltters 1985
             </p>
           </div>
           <div className="ml-auto hidden md:flex items-center gap-5">
+            <a
+              href="/ellingham.py"
+              download="ellingham.py"
+              className="group flex items-center gap-2 rounded-md border border-ink-700 px-3 py-1.5 font-mono text-[11px] text-ink-300 transition-all duration-150 hover:text-ink-950 hover:border-transparent"
+              style={{ background: "rgba(255,255,255,0.03)" }}
+              onMouseEnter={(e) => (e.currentTarget.style.background = family.color)}
+              onMouseLeave={(e) => (e.currentTarget.style.background = "rgba(255,255,255,0.03)")}
+            >
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                <path d="M6 1v7m0 0L3.4 5.4M6 8l2.6-2.6M1.5 10.5h9" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+              ellingham.py
+            </a>
             <div className="font-mono text-[12px] text-ink-300">
               ΔG°<sub>f</sub> = ΔH° − T·ΔS°
             </div>

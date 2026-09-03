@@ -1,4 +1,4 @@
-import type { FamilyKey, Segment } from "../data/ellingham";
+import type { Family, Segment } from "../data/ellingham";
 
 /* ---------- Unicode chemistry typesetting ---------- */
 const SUP: Record<string, string> = {
@@ -55,16 +55,22 @@ export const R = 8.314; // J mol⁻¹ K⁻¹
 
 /**
  * Gas-equilibrium readout at temperature T.
- * Oxides: ΔG° = RT ln pO₂  →  pO₂ in atm.
- * Others: log₁₀ K = −ΔG° / (2.303 RT).
+ * For every gaseous reference (O₂, N₂, F₂, Cl₂, H₂, S₂) the formation
+ * reaction consumes 1 mol of gas, so K = 1/p_gas and
+ * log₁₀ p_gas = ΔG° / (2.303 RT). Carbides have solid carbon: log K only.
  */
-export function equilibrium(family: FamilyKey, gKJ: number, tC: number): string {
+const GAS_LABEL: Record<string, string> = {
+  "O₂": "pO₂", "N₂": "pN₂", "F₂": "pF₂", "Cl₂": "pCl₂", "H₂": "pH₂", "S₂": "pS₂",
+};
+
+export function equilibrium(family: Family, gKJ: number, tC: number): string {
   const T = kelvin(tC);
   if (T <= 0) return "—";
-  if (family === "oxides") {
+  const label = GAS_LABEL[family.gas];
+  if (label) {
     const logP = (gKJ * 1000) / (2.303 * R * T);
-    if (logP > 3) return `pO₂ ≈ ${logP.toFixed(1)} atm`;
-    return `pO₂ ≈ 10${toSup(logP.toFixed(1))} atm`;
+    if (logP > 3) return `${label} ≈ ${logP.toFixed(1)} atm`;
+    return `${label} ≈ 10${toSup(logP.toFixed(1))} atm`;
   }
   const logK = (-gKJ * 1000) / (2.303 * R * T);
   return `log K ≈ ${logK > 0 ? "" : "−"}${Math.abs(logK).toFixed(1)}`;
@@ -85,7 +91,7 @@ export interface ProbeHit {
   eq: string;
 }
 
-export function probeHits(segments: Segment[], family: FamilyKey, tC: number): ProbeHit[] {
+export function probeHits(segments: Segment[], family: Family, tC: number): ProbeHit[] {
   const hits: ProbeHit[] = [];
   for (const seg of segments) {
     const g = gAt(seg, tC);
