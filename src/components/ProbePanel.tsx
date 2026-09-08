@@ -14,13 +14,14 @@ interface Props {
   family: Family;
   hits: ProbeHit[];
   probeT: number;
+  pressure: number;
   hoverId: string | null;
   onHover: (id: string | null) => void;
   pinnedSeg: Segment | null;
   onPin: (id: string | null) => void;
 }
 
-export default function ProbePanel({ family, hits, probeT, hoverId, onHover, pinnedSeg, onPin }: Props) {
+export default function ProbePanel({ family, hits, probeT, pressure, hoverId, onHover, pinnedSeg, onPin }: Props) {
   const pinnedG = pinnedSeg ? gAt(pinnedSeg, probeT) : null;
   const thermo = pinnedSeg ? segmentThermo(pinnedSeg) : null;
 
@@ -102,7 +103,7 @@ export default function ProbePanel({ family, hits, probeT, hoverId, onHover, pin
       )}
 
       <div className="mt-3 pt-2.5 border-t border-ink-800 font-mono text-[10.5px] leading-relaxed text-ink-400">
-        kJ per mol {family.gas} · T = {Math.round(probeT).toLocaleString("en-US")} °C = {Math.round(kelvin(probeT)).toLocaleString("en-US")} K · hover to trace, click to pin
+        kJ per mol {family.gas} · T = {Math.round(probeT).toLocaleString("en-US")} °C = {Math.round(kelvin(probeT)).toLocaleString("en-US")} K · p = {pressure.toFixed(2)} atm · hover to trace, click to pin
       </div>
     </div>
   );

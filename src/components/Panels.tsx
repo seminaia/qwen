@@ -151,32 +151,70 @@ export function ElementFilter({
     onChange(next.size === present.length ? null : next);
   };
 
+  const selectAll = () => onChange(null);
+  const selectNone = () => onChange(new Set());
+  const invertSelection = () => {
+    if (selected === null) {
+      onChange(new Set());
+    } else {
+      const next = new Set(present.filter((s) => !selected.has(s)));
+      onChange(next.size === 0 || next.size === present.length ? null : next);
+    }
+  };
+
   return (
     <div>
       <div className="flex items-center justify-between mb-2.5">
         <h3 className="font-display font-semibold text-sm tracking-wide text-ink-200">Elements</h3>
-        <button
-          onClick={() => onChange(null)}
-          className={`px-2 py-0.5 rounded text-[10.5px] font-mono border transition-colors ${
-            selected === null
-              ? "border-ink-500 text-ink-100 bg-ink-800"
-              : "border-ink-700 text-ink-300 hover:border-ink-500 hover:text-ink-100"
-          }`}
-        >
-          all
-        </button>
+        <div className="flex gap-1">
+          <button
+            onClick={selectAll}
+            className={`px-2 py-0.5 rounded text-[10.5px] font-mono border transition-colors ${
+              selected === null
+                ? "border-ink-500 text-ink-100 bg-ink-800"
+                : "border-ink-700 text-ink-300 hover:border-ink-500 hover:text-ink-100"
+            }`}
+          >
+            all
+          </button>
+          <button
+            onClick={selectNone}
+            className="px-2 py-0.5 rounded text-[10.5px] font-mono text-ink-300 border border-ink-700 hover:border-ink-500 hover:text-ink-100 transition-colors"
+          >
+            none
+          </button>
+          <button
+            onClick={invertSelection}
+            className="px-2 py-0.5 rounded text-[10.5px] font-mono text-ink-300 border border-ink-700 hover:border-ink-500 hover:text-ink-100 transition-colors"
+            title="Invert selection"
+          >
+            invert
+          </button>
+        </div>
       </div>
 
       <div className="flex flex-wrap gap-1 mb-3">
-        {grouped.map((g) => (
-          <button
-            key={g.label}
-            onClick={() => setGroup(g.symbols)}
-            className="px-2 py-0.5 rounded text-[10.5px] font-mono text-ink-400 border border-ink-800 hover:border-ink-600 hover:text-ink-200 transition-colors"
-          >
-            {g.label.toLowerCase()}
-          </button>
-        ))}
+        {grouped.map((g) => {
+          const groupPresent = g.symbols.filter((s) => present.includes(s));
+          const allSelected = selected === null || groupPresent.every((s) => selected.has(s));
+          const someSelected = selected !== null && groupPresent.some((s) => selected.has(s));
+          return (
+            <button
+              key={g.label}
+              onClick={() => setGroup(g.symbols)}
+              className={`px-2 py-0.5 rounded text-[10.5px] font-mono border transition-colors ${
+                allSelected
+                  ? "border-ink-600 bg-ink-800 text-ink-100"
+                  : someSelected
+                  ? "border-ink-700 bg-ink-800/50 text-ink-200"
+                  : "border-ink-800 bg-ink-900/40 text-ink-400 hover:border-ink-600 hover:text-ink-200"
+              }`}
+              title={`${g.label}: ${groupPresent.length} elements available`}
+            >
+              {g.label.toLowerCase()}
+            </button>
+          );
+        })}
       </div>
 
       <div className="flex flex-wrap gap-1">
@@ -203,7 +241,9 @@ export function ElementFilter({
       </div>
       <p className="mt-2 text-[11px] text-ink-400">
         {selected === null
-          ? "Showing every element in this family."
+          ? `Showing all ${present.length} elements in this family.`
+          : selected.size === 0
+          ? "No elements selected."
           : `${selected.size} of ${present.length} elements selected.`}
       </p>
     </div>
