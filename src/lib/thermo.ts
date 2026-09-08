@@ -63,17 +63,35 @@ const GAS_LABEL: Record<string, string> = {
   "O₂": "pO₂", "N₂": "pN₂", "F₂": "pF₂", "Cl₂": "pCl₂", "H₂": "pH₂", "S₂": "pS₂",
 };
 
-export function equilibrium(family: Family, gKJ: number, tC: number): string {
+export function equilibrium(family: Family, gKJ: number, tC: number, pressure: number = 1.0): string {
   const T = kelvin(tC);
   if (T <= 0) return "—";
   const label = GAS_LABEL[family.gas];
   if (label) {
+    // ΔG = -RT ln(K) where K = 1/p for standard state
+    // With non-standard pressure: ΔG' = ΔG° + RT ln(p/p°)
+    // log₁₀(p_eq) = ΔG° / (2.303 RT) when p° = 1 atm
     const logP = (gKJ * 1000) / (2.303 * R * T);
+    if (pressure !== 1.0) {
+      // Adjust for non-standard pressure
+      const correctedLogP = logP + Math.log10(pressure);
+      if (correctedLogP > 3) return `${label} ≈ ${correctedLogP.toFixed(1)} atm (p=${pressure} atm)`;
+      return `${label} ≈ 10${toSup(correctedLogP.toFixed(1))} atm (p=${pressure} atm)`;
+    }
     if (logP > 3) return `${label} ≈ ${logP.toFixed(1)} atm`;
     return `${label} ≈ 10${toSup(logP.toFixed(1))} atm`;
   }
   const logK = (-gKJ * 1000) / (2.303 * R * T);
   return `log K ≈ ${logK > 0 ? "" : "−"}${Math.abs(logK).toFixed(1)}`;
+}
+
+/** Calculate effective ΔG at a given pressure */
+export function gAtPressure(gStandard: number, tC: number, pressure: number): number {
+  const T = kelvin(tC);
+  if (T <= 0 || pressure <= 0) return gStandard;
+  // ΔG' = ΔG° + RT ln(p/p°), with p° = 1 atm
+  const correction = (R * T * Math.log(pressure)) / 1000; // convert J to kJ
+  return gStandard + correction;
 }
 
 /** Piecewise-linear thermodynamics: slope = −ΔS, and ΔH = ΔG + T·ΔS (T in K). */
@@ -91,11 +109,14 @@ export interface ProbeHit {
   eq: string;
 }
 
-export function probeHits(segments: Segment[], family: Family, tC: number): ProbeHit[] {
+export function probeHits(segments: Segment[], family: Family, tC: number, pressure: number = 1.0): ProbeHit[] {
   const hits: ProbeHit[] = [];
   for (const seg of segments) {
-    const g = gAt(seg, tC);
-    if (g !== null) hits.push({ seg, g, eq: equilibrium(family, g, tC) });
+    let g = gAt(seg, tC);
+    if (g !== null && pressure !== 1.0) {
+      g = gAtPressure(g, tC, pressure);
+    }
+    if (g !== null) hits.push({ seg, g, eq: equilibrium(family, g, tC, pressure) });
   }
   return hits.sort((a, b) => a.g - b.g);
 }

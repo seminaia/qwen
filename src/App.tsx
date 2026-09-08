@@ -58,11 +58,20 @@ function BrandMark({ color }: { color: string }) {
   );
 }
 
+const PRESSURE_PRESETS = [
+  { label: "0.01 atm", p: 0.01 },
+  { label: "0.1 atm", p: 0.1 },
+  { label: "1 atm", p: 1.0 },
+  { label: "10 atm", p: 10.0 },
+  { label: "100 atm", p: 100.0 },
+];
+
 export default function App() {
   const [familyKey, setFamilyKey] = useState<FamilyKey>("oxides");
   const [selected, setSelected] = useState<Set<string> | null>(null);
   const [phases, setPhases] = useState<Set<PhaseKey>>(new Set(PHASE_ORDER));
   const [probeT, setProbeT] = useState(1000);
+  const [pressure, setPressure] = useState(1.0);
   const [hoverId, setHoverId] = useState<string | null>(null);
   const [pinnedId, setPinnedId] = useState<string | null>(null);
 
@@ -78,7 +87,7 @@ export default function App() {
     [family, phases, selected],
   );
 
-  const hits = useMemo(() => probeHits(segments, family, probeT), [segments, family, probeT]);
+  const hits = useMemo(() => probeHits(segments, family, probeT, pressure), [segments, family, probeT, pressure]);
   const pinnedSeg = useMemo(() => segments.find((s) => s.id === pinnedId) ?? null, [segments, pinnedId]);
 
   const animKey = useMemo(
@@ -148,7 +157,7 @@ export default function App() {
             </div>
             <div className="flex items-center gap-2 font-mono text-[11px] text-ink-400">
               <span className="status-dot w-2 h-2 rounded-full" style={{ background: family.color, boxShadow: `0 0 8px ${family.glow}` }} />
-              probe {fmtTemp(probeT)}
+              probe {fmtTemp(probeT)} · p = {pressure.toFixed(2)} atm
             </div>
           </div>
         </div>
@@ -242,6 +251,40 @@ export default function App() {
                   </button>
                 ))}
               </div>
+              
+              {/* pressure control */}
+              <div className="flex items-center gap-4 mt-4 pt-3 border-t border-ink-800/50">
+                <span className="font-mono text-[11px] uppercase tracking-widest text-ink-400 shrink-0">pressure</span>
+                <input
+                  type="range"
+                  className="temp-slider flex-1"
+                  min={-2}
+                  max={2}
+                  step={0.1}
+                  value={Math.log10(pressure)}
+                  onChange={(e) => setPressure(Math.pow(10, Number(e.target.value)))}
+                  aria-label="Gas pressure in atm (log scale)"
+                />
+                <div className="font-mono text-[13px] tabular-nums shrink-0 w-[120px] text-right">
+                  <span className="text-probe">{pressure >= 0.01 && pressure <= 999 ? pressure.toFixed(2) : pressure.toExponential(1)}</span>
+                  <span className="text-ink-400 text-[10.5px] block">atm</span>
+                </div>
+              </div>
+              <div className="flex flex-wrap gap-1.5 mt-2.5">
+                {PRESSURE_PRESETS.map((p) => (
+                  <button
+                    key={p.label}
+                    onClick={() => setPressure(p.p)}
+                    className={`px-2.5 py-1 rounded font-mono text-[11px] border transition-all duration-150 ${
+                      pressure === p.p
+                        ? "border-probe/60 text-probe bg-probe/10"
+                        : "border-ink-700 text-ink-300 hover:border-ink-500 hover:text-ink-100"
+                    }`}
+                  >
+                    {p.label}
+                  </button>
+                ))}
+              </div>
             </div>
           </section>
 
@@ -251,6 +294,7 @@ export default function App() {
               family={family}
               hits={hits}
               probeT={probeT}
+              pressure={pressure}
               hoverId={hoverId}
               onHover={setHoverId}
               pinnedSeg={pinnedSeg}
